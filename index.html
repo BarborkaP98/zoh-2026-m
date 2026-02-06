@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<title>Olympijský kalendář ZOH 2026</title>
+<style>
+body {
+  font-family: Arial, sans-serif;
+  text-align: center;
+  background: #f2f2f2;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 15px;
+  max-width: 800px;
+  margin: 30px auto;
+}
+.day {
+  background: #ccc;
+  padding: 20px;
+  border-radius: 10px;
+  opacity: 0.5;
+}
+.day.open {
+  background: #4CAF50;
+  color: white;
+  cursor: pointer;
+  opacity: 1;
+}
+</style>
+</head>
+
+<body>
+<h1>Zimní olympijský kalendář 2026</h1>
+<div class="grid" id="calendar"></div>
+
+<script>
+const startDate = new Date("2026-02-06T00:00:00");
+const solutionDate = new Date("2026-02-23T00:00:00");
+
+const images = [
+  "01-uvod.jpg",
+  "02-06-02.jpg",
+  "03-07-02.jpg",
+  "04-08-02.jpg",
+  "05-09-02.jpg",
+  "06-10-02.jpg",
+  "07-11-02.jpg",
+  "08-12-02.jpg",
+  "09-13-02.jpg",
+  "10-14-02.jpg",
+  "11-15-02.jpg",
+  "12-16-02.jpg",
+  "13-17-02.jpg",
+  "14-18-02.jpg",
+  "15-19-02.jpg",
+  "16-20-02.jpg",
+  "17-21-02.jpg",
+  "18-22-02.jpg",
+  "19-reseni.jpg"
+];
+
+const today = new Date();
+const calendar = document.getElementById("calendar");
+
+// ÚVOD – vždy otevřený
+calendar.innerHTML += `
+  <div class="day open" onclick="openImg(0)">
+    ÚVOD
+  </div>
+`;
+
+// Denní úlohy
+for (let i = 1; i < images.length - 1; i++) {
+  const unlock = new Date(startDate);
+  unlock.setDate(startDate.getDate() + (i - 1));
+  const open = today >= unlock;
+
+  calendar.innerHTML += `
+    <div class="day ${open ? 'open' : ''}"
+      ${open ? `onclick="openImg(${i})"` : ''}>
+      ${unlock.getDate()}. ${unlock.getMonth() + 1}.
+    </div>
+  `;
+}
+
+// ŘEŠENÍ
+const solutionOpen = today >= solutionDate;
+calendar.innerHTML += `
+  <div class="day ${solutionOpen ? 'open' : ''}"
+    ${solutionOpen ? `onclick="openImg(${images.length - 1})"` : ''}>
+    ŘEŠENÍ
+  </div>
+`;
+
+function openImg(i) {
+  window.open("images/" + images[i], "_blank");
+}
+</script>
+</body>
+</html>
+
